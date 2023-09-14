@@ -7,18 +7,49 @@
 <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-  const root = document.getElementById("root");
   function App() {
-    const [counter, modifier] = React.useState(0);
+    const [amount, setAmount] = React.useState();
+    const [flipped, setFlipped] = React.useState(false);
+    const onChange = (event) => {
+      setAmount(event.target.value);
+    };
+    const reset = () => setAmount(0);
+    const onFlip = () => {
+      reset()
+      setFlipped((current) => !current)
+    };
     return(
       <div>
-        <h3>Total clicks: {counter}</h3>
-        <button>Click me</button>
+        <h1>Super Converter</h1>
+        <div>
+          <label htmlFor="amount">Minutes</label>
+          <input 
+          value={flipped ? amount * 60 : amount} 
+          id="minutes" 
+          placeholder="Minutes" 
+          type="number"
+          onChange={onChange} 
+          disabled={flipped}
+          />
+        </div>
+        <div>
+          <label htmlFor="hours">Hours</label>
+          <input 
+            value={flipped ? amount : Math.round(amount/60)}
+            id="hours"
+            placeholder="Hours"
+            type="number"
+            onChange={onChange} 
+            disabled={!flipped}
+          />
+        </div>
+        <button onClick={reset}>reset</button>
+        <button onClick={onFlip}>Flip</button>
+        
       </div>
     );
   }
-
-
+  const root = document.getElementById("root");
   ReactDOM.render(<App />, root);
 </script>
 </html>
